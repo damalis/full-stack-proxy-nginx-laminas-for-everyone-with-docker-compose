@@ -244,6 +244,8 @@ add or remove code in the ```./webserver/extra/httpd-vhosts.conf``` file for cus
 
 Database abstraction layer, SQL abstraction, result set abstraction, and RowDataGateway and TableDataGateway implementations.
 
+Database host = database
+
 [https://docs.laminas.dev/laminas-db/](https://docs.laminas.dev/laminas-db/)
 
 [https://mariadb.com/kb/en/configuring-mariadb-with-option-files/](https://mariadb.com/kb/en/configuring-mariadb-with-option-files/)
