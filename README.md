@@ -203,7 +203,7 @@ docker-compose up -d
 
 ### Website
 
-You should see the "Laminas (9.1.4) (Laravel Components ^9.21)" page in your browser. If not, please check if your PHP installation satisfies Laminas's requirements.
+You should see the "Welcome to Laminas MVC Skeleton Application" page in your browser. If not, please check if your PHP installation satisfies Laminas's requirements.
 
 ```
 https://example.com
