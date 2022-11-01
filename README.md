@@ -38,6 +38,11 @@ Create rules to open ports to the internet, or to a specific IPv4 address or ran
 - [Manual Configuration and Installation](#manual)
 - [Portainer Installation](#portainer)
 - [Usage](#usage)
+	- [Website](#website)
+	- [Webserver](#webserver)
+	- [Redis Plugin](#redis-plugin)
+	- [phpMyAdmin](#phpmyadmin)
+	- [backup](#backup)
 
 ## Automatic
 
@@ -217,13 +222,13 @@ add or remove code in the ```./php-fpm/php-fpm.d/z-www.conf``` file for php-fpm 
 
 Or you should make changes custom host configurations then must restart service
 
-```
-docker container restart laminas
-```
-
 FPM uses php.ini syntax for its configuration file - php-fpm.conf, and pool configuration files.
 
 [https://www.php.net/manual/en/install.fpm.configuration.php](https://www.php.net/manual/en/install.fpm.configuration.php)
+
+```
+docker container restart laminas
+```
 
 add and/or remove laminas site folders and files with any ftp client program in ```./laminas/webapp``` folder.
 <br />You can also visit `https://example.com` to access website after starting the containers.
