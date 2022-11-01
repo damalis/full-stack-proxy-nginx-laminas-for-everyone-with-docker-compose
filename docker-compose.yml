@@ -28,14 +28,15 @@ services:
             test: ["CMD-SHELL", "curl -fk https://${DOMAIN_NAME} || exit 1"]
             interval: 10s
             timeout: 5s
-            retries: 3
-            start_period: 10s
+            retries: 6
+            start_period: 60s
         environment:
             TZ: '${LOCAL_TIMEZONE}'
         labels:            
             - 'docker-volume-backup.stop-during-backup=true'
         command: > 
-            bash -c "apt-get -y update && apt-get install -y zip unzip && docker-php-ext-install pdo_mysql && docker-php-ext-enable pdo_mysql; curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && if [ \"$$(ls -A ${WEBSERVER_DOC_ROOT}/webapp)\" ]; then composer update --working-dir=${WEBSERVER_DOC_ROOT}/webapp; else composer create-project -s dev laminas/laminas-mvc-skeleton webapp; composer require laminas/laminas-db:* laminas/laminas-cache:* --working-dir=${WEBSERVER_DOC_ROOT}/webapp --no-interaction; fi; 
+            bash -c "apt-get -y update && apt-get install -y zip unzip libicu-dev && docker-php-ext-install pdo_mysql intl && docker-php-ext-enable pdo_mysql intl; curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && 
+            if [ \"$$(ls -A ${WEBSERVER_DOC_ROOT}/webapp)\" ]; then composer update --working-dir=${WEBSERVER_DOC_ROOT}/webapp; else composer create-project -s dev laminas/laminas-mvc-skeleton webapp; composer require laminas/laminas-db:* laminas/laminas-cache:* --working-dir=${WEBSERVER_DOC_ROOT}/webapp --no-interaction; fi; 
             grep -qe 'date.timezone = ${LOCAL_TIMEZONE}' ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini || echo 'date.timezone = ${LOCAL_TIMEZONE}' >> ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini; php-fpm"
 
     webserver:
