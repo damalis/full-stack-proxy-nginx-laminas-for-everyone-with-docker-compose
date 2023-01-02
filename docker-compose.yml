@@ -185,6 +185,8 @@ services:
             TZ: '${LOCAL_TIMEZONE}'
         labels:            
             - "docker-volume-backup.stop-during-backup=true"
+            - "docker-volume-backup.archive-pre=/bin/sh -c 'mysqldump -uroot -p${MYSQL_ROOT_PASSWORD} --all-databases > /tmp/backup/db_backup_data.sql'"
+            - "docker-volume-backup.exec-label=database"
         command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password"
     
     redis:
@@ -228,7 +230,7 @@ services:
             BACKUP_FILENAME: 'backup-%Y-%m-%dT%H-%M-%S.tar.gz'
             BACKUP_RETENTION_DAYS: '7'
             EXEC_LABEL: 'database'
-            BACKUP_EXCLUDE_REGEXP: 'vendor|module|data|bin|\\.log$$'    
+            BACKUP_EXCLUDE_REGEXP: 'webapp/vendor|webapp/module|webapp/data|webapp/bin|\\.log$$'    
 
 networks:
     backend: null
