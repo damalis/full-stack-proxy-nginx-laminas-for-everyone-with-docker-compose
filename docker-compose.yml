@@ -39,7 +39,7 @@ services:
             - 'docker-volume-backup.stop-during-backup=true'
         command: >
             bash -c "apt-get update && sh /tmp/packagecheck.sh 'zip unzip' && curl -sSL https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o - | sh -s intl pdo_mysql && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && 
-            if [ \"$$(ls -A ${WEBSERVER_DOC_ROOT}/public)\" ]; then composer update --working-dir=${WEBSERVER_DOC_ROOT}; else rm -f ${WEBSERVER_DOC_ROOT}/README.md && composer create-project -sdev laminas/laminas-mvc-skeleton . --working-dir=${WEBSERVER_DOC_ROOT} && composer require laminas/laminas-db:* laminas/laminas-cache:* --working-dir=${WEBSERVER_DOC_ROOT} --no-interaction; fi; 
+            if [ \"$$(ls -A ${WEBSERVER_DOC_ROOT}/public)\" ]; then composer update --working-dir=${WEBSERVER_DOC_ROOT}; else rm -f ${WEBSERVER_DOC_ROOT}/README.md && composer create-project -s stable laminas/laminas-mvc-skeleton . --working-dir=${WEBSERVER_DOC_ROOT} --no-interaction && composer require laminas/laminas-db laminas/laminas-cache --working-dir=${WEBSERVER_DOC_ROOT} --no-interaction; fi; 
             grep -qe 'date.timezone = ${LOCAL_TIMEZONE}' ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini || echo 'date.timezone = ${LOCAL_TIMEZONE}' >> ${PHP_INI_DIR_PREFIX}/php/conf.d/security.ini; php-fpm"
 
     webserver:
@@ -49,7 +49,7 @@ services:
         image: httpd:latest
         container_name: webserver
         networks:
-            - backend            
+            - backend
         volumes:
             - 'html:${WEBSERVER_DOC_ROOT}'
             - type: bind
@@ -76,7 +76,7 @@ services:
             - 'certbot-etc:${LETSENCRYPT_CONF_PREFIX}'
             - 'certbot-var:/var/lib/letsencrypt'
             - '/tmp/acme-challenge:/tmp/acme-challenge'
-        restart: unless-stopped        
+        restart: unless-stopped
         healthcheck:
             test: ["CMD-SHELL", "test -d ${LETSENCRYPT_CONF_PREFIX}/live/${DOMAIN_NAME} || exit 1"]
             interval: 5s
@@ -226,7 +226,7 @@ services:
             ALLOW_EMPTY_PASSWORD: 'yes'
             TZ: '${LOCAL_TIMEZONE}'
         command: "redis-server ${REDIS_CONF_PREFIX}/redis/redis.conf"
-    
+
     backup:
         image: offen/docker-volume-backup:latest
         container_name: backup
